@@ -1,0 +1,17 @@
+id,name_ja,name_en
+1,職業,Occupation
+2,小さい進歩,Minor Improvement
+3,大きい進歩,Major Improvement
+4,物乞い,Begging
+5,職業 (Xデッキ),Occupation (X-Deck)
+6,小さい進歩 (Xデッキ),Minor Improvement (X-Deck)
+7,アクションスペース (Xデッキ),Action Space (X-Deck)
+8,商人 (Xデッキ),Merchant (X-Deck)
+9,イベント (Xデッキ),Event (X-Deck)
+10,職業 (🌲デッキ),Occupation (Forest-Deck)
+11,小さい進歩 (🌲デッキ),Minor Improvement (Forest-Deck)
+12,大きい進歩 (🌲デッキ),Major Improvement (Forest-Deck)
+13,アクションスペース (🌲デッキ),Action Space (Forest-Deck)
+14,イベント (🌲デッキ),Event (Forest-Deck)
+16,取り替え子 (WBデッキ),Changeling (WB-Deck)
+9000,その他,Misc

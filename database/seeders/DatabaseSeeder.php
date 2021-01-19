@@ -13,6 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call([
+            ProductsSeeder::class,
+            DecksSeeder::class,
+            CardTypesSeeder::class,
+            Rev2CategoryIconsSeeder::class,
+            SpecialColorsSeeder::class,
+            CardsSeeder::class,
+        ]);
     }
 }
