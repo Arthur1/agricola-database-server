@@ -5,7 +5,7 @@ namespace App\DataTypes;
 class SearchCardsOptions implements DataType {
     private ?int $limit;
 
-    private ?int $offset;
+    private ?int $page;
 
     private ?int $product_id;
 
@@ -21,7 +21,7 @@ class SearchCardsOptions implements DataType {
 
     public function __construct(
         ?int $limit,
-        ?int $offset,
+        ?int $page,
         ?int $product_id,
         ?int $deck_id,
         ?int $type_id,
@@ -30,7 +30,7 @@ class SearchCardsOptions implements DataType {
         ?array $description_words
     ) {
         $this->limit = $limit;
-        $this->offset = $offset;
+        $this->page = $page;
         $this->product_id = $product_id;
         $this->deck_id = $deck_id;
         $this->type_id = $type_id;
@@ -48,11 +48,11 @@ class SearchCardsOptions implements DataType {
 	}
 
 	/**
-	 * Get the value of offset
+	 * Get the value of page
 	 */
-	public function getOffset(): ?int
+	public function getPage(): ?int
 	{
-		return $this->offset;
+		return $this->page;
 	}
 
 	/**

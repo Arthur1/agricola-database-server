@@ -31,7 +31,7 @@ class SearchCardsOptionsGenerator implements DataTypeGenerator {
 
         $options = new SearchCardsOptions(
             $this->request->query('limit'),
-            $this->request->query('offset'),
+            $this->request->query('page'),
             $this->request->query('product_id'),
             $this->request->query('deck_id'),
             $this->request->query('type_id'),

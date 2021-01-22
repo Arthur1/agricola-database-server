@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\DataTypes\SearchCardsOptions;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -12,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class Card extends Model
 {
     use HasFactory;
+
+    const LIST_DEFAULT_LIMIT = 30;
 
     protected $table = 'cards';
 
@@ -63,27 +64,35 @@ class Card extends Model
             ->first();
     }
 
-    public static function getList(SearchCardsOptions $options): Collection {
-        return self::inDetail(false)
+    public static function getList(SearchCardsOptions $options) {
+        $query = self::inDetail(false)
             ->searchFilter($options)
-            ->orderBy('id')
-            ->get();
+            ->orderBy('id');
+        if ($options->getPage()) {
+            return $query->paginate($options->getLimit() ?: self::LIST_DEFAULT_LIMIT);
+        } else {
+            return $query->get();
+        }
     }
 
-    public static function getListByRevision(int $revision_id, SearchCardsOptions $options): Collection {
-        return self::inDetail(false)
+    public static function getListByRevision(int $revision_id, SearchCardsOptions $options) {
+        $query = self::inDetail(false)
             ->ofRevision($revision_id)
             ->searchFilter($options)
-            ->orderBy('id')
-            ->get();
+            ->orderBy('id');
+        if ($options->getPage()) {
+            return $query->paginate($options->getLimit() ?: self::LIST_DEFAULT_LIMIT);
+        } else {
+            return $query->get();
+        }
     }
 
     public function scopeInDetail(Builder $query, bool $is_in_detail): Builder {
         if ($is_in_detail) {
             $query->with(['product', 'deck', 'type', 'rev2_category_icon', 'special_color']);
         } else {
-            $query->select(['id', 'literal_id', 'printed_id', 'product_id', 'type_id', 'name_ja', 'name_en', 'special_color_id'])
-                ->with(['product', 'type', 'special_color']);
+            $query->select(['id', 'literal_id', 'printed_id', 'product_id', 'deck_id', 'type_id', 'name_ja', 'name_en', 'special_color_id'])
+                ->with(['product', 'deck', 'type', 'special_color']);
         }
         return $query;
     }
@@ -95,12 +104,6 @@ class Card extends Model
     }
 
     public function scopeSearchFilter(Builder $query, SearchCardsOptions $options): Builder {
-        if ($limit = $options->getLimit()) {
-            $query->limit($limit);
-        }
-        if ($offset = $options->getOffset()) {
-            $query->offset($offset);
-        }
         if ($product_id = $options->getProductId()) {
             $query->where('product_id', $product_id);
         }
