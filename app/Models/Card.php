@@ -82,8 +82,8 @@ class Card extends Model
         if ($is_in_detail) {
             $query->with(['product', 'deck', 'type', 'rev2_category_icon', 'special_color']);
         } else {
-            $query->select(['id', 'literal_id', 'printed_id', 'type_id', 'name_ja', 'name_en', 'special_color_id'])
-            ->with(['type', 'special_color']);
+            $query->select(['id', 'literal_id', 'printed_id', 'product_id', 'type_id', 'name_ja', 'name_en', 'special_color_id'])
+                ->with(['product', 'type', 'special_color']);
         }
         return $query;
     }
