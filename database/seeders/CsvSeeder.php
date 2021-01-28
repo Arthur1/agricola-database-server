@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use SplFileObject;
 
 class CsvSeeder extends Seeder
@@ -10,6 +11,7 @@ class CsvSeeder extends Seeder
     protected static string $file_path;
     protected static array $nullable_columns;
     protected static string $model;
+    protected static string $table_name;
     protected static $unique_by;
 
     /**
@@ -23,8 +25,7 @@ class CsvSeeder extends Seeder
         $file->setFlags(
             SplFileObject::READ_CSV |
             SplFileObject::READ_AHEAD |
-            SplFileObject::SKIP_EMPTY |
-            SplFileObject::DROP_NEW_LINE
+            SplFileObject::SKIP_EMPTY
         );
 
         // header
@@ -44,6 +45,12 @@ class CsvSeeder extends Seeder
             $file->next();
         }
 
-        static::$model::upsert($values, static::$unique_by);
+        if (isset(static::$model)) {
+            static::$model::upsert($values, static::$unique_by);
+        } else if (isset(static::$table_name)) {
+            DB::table(static::$table_name)->upsert($values, static::$unique_by);
+        } else {
+            assert(false);
+        }
     }
 }

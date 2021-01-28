@@ -21,10 +21,9 @@ class Card extends Model
     public $timestamps = false;
 
     protected $hidden = [
-        'product_id',
         'deck_id',
         'type_id',
-        'rev2_category_icon_id',
+        'ag2_category_icon_id',
         'special_color_id',
     ];
 
@@ -37,8 +36,8 @@ class Card extends Model
         'has_bread_icon' => 'boolean',
     ];
 
-    public function product(): Relation {
-        return $this->belongsTo(Product::class);
+    public function products(): Relation {
+        return $this->belongsToMany(Product::class);
     }
 
     public function deck(): Relation {
@@ -49,8 +48,8 @@ class Card extends Model
         return $this->belongsTo(CardType::class);
     }
 
-    public function rev2_category_icon(): Relation {
-        return $this->belongsTo(Rev2CategoryIcon::class);
+    public function ag2_category_icon(): Relation {
+        return $this->belongsTo(Ag2CategoryIcon::class);
     }
 
     public function special_color(): Relation {
@@ -60,12 +59,12 @@ class Card extends Model
     public static function findByRevisionAndLiteralId(int $revision_id, string $literal_id): self {
         return self::where('literal_id', $literal_id)
             ->ofRevision($revision_id)
-            ->inDetail(true)
-            ->first();
+            ->inDetail()
+            ->firstOrFail();
     }
 
     public static function getList(SearchCardsOptions $options) {
-        $query = self::inDetail(false)
+        $query = self::inDetail()
             ->searchFilter($options)
             ->orderBy('id');
         if ($options->getPage()) {
@@ -76,7 +75,7 @@ class Card extends Model
     }
 
     public static function getListByRevision(int $revision_id, SearchCardsOptions $options) {
-        $query = self::inDetail(false)
+        $query = self::inDetail()
             ->ofRevision($revision_id)
             ->searchFilter($options)
             ->orderBy('id');
@@ -87,25 +86,18 @@ class Card extends Model
         }
     }
 
-    public function scopeInDetail(Builder $query, bool $is_in_detail): Builder {
-        if ($is_in_detail) {
-            $query->with(['product', 'deck', 'type', 'rev2_category_icon', 'special_color']);
-        } else {
-            $query->select(['id', 'literal_id', 'printed_id', 'product_id', 'deck_id', 'type_id', 'name_ja', 'name_en', 'special_color_id'])
-                ->with(['product', 'deck', 'type', 'special_color']);
-        }
+    public function scopeInDetail(Builder $query): Builder {
+        $query->with(['products', 'deck', 'type', 'ag2_category_icon', 'special_color']);
         return $query;
     }
 
     public function scopeOfRevision(Builder $query, int $revision_id): Builder {
-        return $query->whereHas('product', function (Builder $query) use ($revision_id) {
-            $query->where('revision_id', $revision_id);
-        });
+        return $query->where('revision_id', $revision_id);
     }
 
     public function scopeSearchFilter(Builder $query, SearchCardsOptions $options): Builder {
         if ($product_id = $options->getProductId()) {
-            $query->where('product_id', $product_id);
+            // $query->where('product_id', $product_id);
         }
         if ($deck_id = $options->getDeckId()) {
             $query->where('deck_id', $deck_id);

@@ -17,9 +17,10 @@ class DatabaseSeeder extends Seeder
             ProductsSeeder::class,
             DecksSeeder::class,
             CardTypesSeeder::class,
-            Rev2CategoryIconsSeeder::class,
+            Ag2CategoryIconsSeeder::class,
             SpecialColorsSeeder::class,
             CardsSeeder::class,
+            CardProductSeeder::class,
         ]);
     }
 }

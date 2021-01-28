@@ -34,7 +34,7 @@ class CreateCardTables extends Migration
             $table->string('name_en');
         });
 
-        Schema::create('rev2_category_icons', function (Blueprint $table) {
+        Schema::create('ag2_category_icons', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
             $table->string('name_ja');
             $table->string('name_en');
@@ -51,13 +51,12 @@ class CreateCardTables extends Migration
             $table->string('literal_id');
             $table->string('printed_id');
             $table->unsignedBigInteger('playagricola_card_id')->nullable();
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedbigInteger('revision_id');
             $table->unsignedBigInteger('deck_id')->nullable();
             $table->unsignedBigInteger('type_id');
             $table->string('name_ja');
             $table->string('name_en');
-            $table->unsignedTinyInteger('occ_category')->nullable();
-            $table->string('occ_ex_cost')->nullable();
+            $table->unsignedTinyInteger('min_players_number')->nullable();
             $table->string('imp_prereq')->nullable();
             $table->string('imp_cost')->nullable();
             $table->text('description');
@@ -68,20 +67,29 @@ class CreateCardTables extends Migration
             $table->boolean('has_neg_bonus');
             $table->boolean('has_pan_icon');
             $table->boolean('has_bread_icon');
-            $table->unsignedBigInteger('rev2_category_icon_id')->nullable();
+            $table->unsignedBigInteger('ag2_category_icon_id')->nullable();
             $table->unsignedBigInteger('special_color_id')->nullable();
 
             // foreign keys
-            $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('deck_id')->references('id')->on('decks');
             $table->foreign('type_id')->references('id')->on('card_types');
-            $table->foreign('rev2_category_icon_id')->references('id')->on('rev2_category_icons');
+            $table->foreign('ag2_category_icon_id')->references('id')->on('ag2_category_icons');
             $table->foreign('special_color_id')->references('id')->on('special_colors');
 
             // index
             $table->index('literal_id');
-            $table->index('product_id');
             $table->index('deck_id');
+        });
+
+        Schema::create('card_product', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('card_id');
+            $table->unsignedBigInteger('product_id');
+
+            // foreign, unique keys
+            $table->foreign('card_id')->references('id')->on('cards');
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->unique(['card_id', 'product_id']);
         });
     }
 
@@ -92,9 +100,10 @@ class CreateCardTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('card_product');
         Schema::dropIfExists('cards');
         Schema::dropIfExists('special_colors');
-        Schema::dropIfExists('rev2_category_icons');
+        Schema::dropIfExists('ag2_category_icons');
         Schema::dropIfExists('card_types');
         Schema::dropIfExists('decks');
         Schema::dropIfExists('products');
