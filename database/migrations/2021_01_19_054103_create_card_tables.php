@@ -26,6 +26,7 @@ class CreateCardTables extends Migration
             $table->unsignedBigInteger('id')->primary();
             $table->string('name_ja');
             $table->string('name_en');
+            $table->unsignedBigInteger('revision_id');
         });
 
         Schema::create('card_types', function (Blueprint $table) {

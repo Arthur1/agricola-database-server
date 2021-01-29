@@ -97,13 +97,19 @@ class Card extends Model
 
     public function scopeSearchFilter(Builder $query, SearchCardsOptions $options): Builder {
         if ($product_id = $options->getProductId()) {
-            // $query->where('product_id', $product_id);
+            $query->whereHas('products', function (Builder $query) use ($product_id) {
+                $query->where('products.id', $product_id);
+            });
         }
         if ($deck_id = $options->getDeckId()) {
             $query->where('deck_id', $deck_id);
         }
         if ($type_id = $options->getTypeId()) {
-            $query->where('type_id', $type_id);
+            if ($type_id === -1) {
+                $query->whereNotIn('type_id', [1, 2, 3]);
+            } else {
+                $query->where('type_id', $type_id);
+            }
         }
         if ($name_ja = $options->getNameJa()) {
             $query->where('name_ja', 'like', "%{$name_ja}%");

@@ -14,6 +14,26 @@ class SearchCardsOptionsGenerator implements DataTypeGenerator {
     }
 
     public function get(): SearchCardsOptions {
+        if ($limit = $this->request->query('limit')) {
+            $limit = (int) $limit;
+        }
+
+        if ($page = $this->request->query('page')) {
+            $page = (int) $page;
+        }
+
+        if ($product_id = $this->request->query('product_id')) {
+            $product_id = (int) $product_id;
+        }
+
+        if ($deck_id = $this->request->query('deck_id')) {
+            $deck_id = (int) $deck_id;
+        }
+
+        if ($type_id = $this->request->query('type_id')) {
+            $type_id = (int) $type_id;
+        }
+
         if ($name_ja = $this->request->query('name_ja')) {
             self::normalizeSearchText($name_ja);
         }
@@ -30,11 +50,11 @@ class SearchCardsOptionsGenerator implements DataTypeGenerator {
         }
 
         $options = new SearchCardsOptions(
-            $this->request->query('limit'),
-            $this->request->query('page'),
-            $this->request->query('product_id'),
-            $this->request->query('deck_id'),
-            $this->request->query('type_id'),
+            $limit,
+            $page,
+            $product_id,
+            $deck_id,
+            $type_id,
             $name_ja,
             $name_en,
             $description_words
