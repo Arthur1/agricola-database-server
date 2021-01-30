@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\DecksController;
+use App\Http\Controllers\UtilsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +19,14 @@ use App\Http\Controllers\DecksController;
 */
 
 Route::get('/cards', [CardsController::class, 'getList']);
-Route::get('/cards/{id}', [CardsController::class, 'getById']);
 Route::get('/AG{revision_id}/cards', [CardsController::class, 'getListByRevision']);
+Route::get('/cards/{id}', [CardsController::class, 'getById']);
 Route::get('/AG{revision_id}/cards/{literal_id}', [CardsController::class, 'getByRevisionAndLiteralId']);
+
 Route::get('/products', [ProductsController::class, 'getList']);
 Route::get('/AG{revision_id}/products', [ProductsController::class, 'getListByRevision']);
+
 Route::get('/decks', [DecksController::class, 'getList']);
 Route::get('/AG{revision_id}/decks', [DecksController::class, 'getListByRevision']);
+
+Route::get('/utils/version', [UtilsController::class, 'getVersion']);
