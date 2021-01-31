@@ -10,7 +10,7 @@ return [
     | the framework needs to place the application's version in a notification
     | or any other location as required by the application or its packages.
     */
-    'version' => '0.1.1',
+    'version' => '0.1.2',
 
     /*
     |--------------------------------------------------------------------------
@@ -184,6 +184,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
 
     ],
 
