@@ -44,4 +44,5 @@ $ make exec
 # artisan key:generate
 # artisan migrate
 # artisan db:seed
+# artisan telescope:install
 ```
