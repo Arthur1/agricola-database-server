@@ -36,6 +36,14 @@ class Card extends Model
         'has_bread_icon' => 'boolean',
     ];
 
+    protected $with = [
+        'products',
+        'deck',
+        'type',
+        'ag2_category_icon',
+        'special_color',
+    ];
+
     public function products(): Relation {
         return $this->belongsToMany(Product::class);
     }
@@ -54,6 +62,14 @@ class Card extends Model
 
     public function special_color(): Relation {
         return $this->belongsTo(SpecialColor::class);
+    }
+
+    public function origin_cards(): Relation {
+        return $this->belongsToMany(self::class, 'card_republished', 'card_id', 'origin_card_id');
+    }
+
+    public function republished_cards(): Relation {
+        return $this->belongsToMany(self::class, 'card_republished', 'origin_card_id', 'card_id');
     }
 
     public static function findByRevisionAndLiteralId(int $revision_id, string $literal_id): self {
@@ -87,7 +103,7 @@ class Card extends Model
     }
 
     public function scopeInDetail(Builder $query): Builder {
-        $query->with(['products', 'deck', 'type', 'ag2_category_icon', 'special_color']);
+        $query->with(['origin_cards', 'republished_cards']);
         return $query;
     }
 
