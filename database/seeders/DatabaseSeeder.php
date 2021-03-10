@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             SpecialColorsSeeder::class,
             CardsSeeder::class,
             CardProductSeeder::class,
+            CardRepublishedSeeder::class,
         ]);
     }
 }
