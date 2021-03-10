@@ -136,7 +136,7 @@ class Card extends Model
         if ($description_words = $options->getDescriptionWords()) {
             $query->where(function($query) use ($description_words) {
                 foreach ($description_words as $word) {
-                    $query->andWhere('description', 'like', "%{$word}%");
+                    $query->where('description', 'like', "%{$word}%");
                 }
             });
         }
