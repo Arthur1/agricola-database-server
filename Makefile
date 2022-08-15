@@ -1,18 +1,19 @@
-ps:
-	cd laradock; docker-compose ps
-
-restart:
-	make stop
-	make start
-
-start:
-	cd laradock; docker-compose up -d nginx mysql redis php-fpm workspace
-
-stop:
-	cd laradock; docker-compose down
-
+.PHONY: build
 build:
-	cd laradock; docker-compose build nginx mysql redis php-fpm workspace
+	docker compose build
 
+.PHONY: start
+start:
+	docker compose up -d
+
+.PHONY: stop
+stop:
+	docker compose down
+
+.PHONY: ps
+ps:
+	docker compose ps
+
+.PHONY: exec
 exec:
-	cd laradock; docker-compose exec --user laradock workspace bash
+	docker compose exec --user 1000 app bash

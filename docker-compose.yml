@@ -1,0 +1,31 @@
+volumes:
+  db-store:
+
+services:
+  web:
+    container_name: web
+    build:
+      context: ./
+      dockerfile: ./docker/web/Dockerfile
+    volumes:
+      - ./:/var/www
+    ports:
+      - 80:80
+
+  app:
+    container_name: app
+    build:
+      context: ./
+      dockerfile: ./docker/app/Dockerfile
+    volumes:
+      - ./:/var/www
+
+  db:
+    container_name: db
+    build:
+      context: ./
+      dockerfile: ./docker/db/Dockerfile
+    ports:
+      - 3306:3306
+    volumes:
+      - db-store:/var/lib/mysql
