@@ -2,23 +2,9 @@
 
 ## init
 
-### laradock
+### docker
 
 ```
-$ cd laradock
-$ cp env-sample .env
-```
-
-edit `.env` as follows:
-
-```
-COMPOSE_PROJECT_NAME=agricola-database
-PHP_VERSION=7.4
-MYSQL_DATABASE=agricola_database
-```
-
-```
-$ cd ../
 $ make build
 $ make start
 ```
@@ -32,17 +18,17 @@ $ cp .env.example .env
 edit `.env` as follows:
 
 ```
-DB_HOST=agricola-database_mysql_1
-DB_DATABASE=agricola_database
+DB_HOST=db
+DB_DATABASE=agricola-database
 DB_USERNAME=default
-DB_PASSWORD=secret
+DB_PASSWORD=password
 ```
 
 ```
 $ make exec
-# composer install
-# artisan key:generate
-# artisan migrate
-# artisan db:seed
-# artisan telescope:install
+% composer install
+% php artisan key:generate
+% artisan migrate
+% artisan db:seed
+% artisan telescope:install
 ```
