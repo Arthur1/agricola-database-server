@@ -34,6 +34,10 @@ class Card extends Model
         'has_neg_bonus' => 'boolean',
         'has_pan_icon' => 'boolean',
         'has_bread_icon' => 'boolean',
+        'has_cut_peat_icon' => 'boolean',
+        'has_fell_trees_icon' => 'boolean',
+        'has_slash_and_burn_icon' => 'boolean',
+        'has_hiring_fare_icon' => 'boolean',
     ];
 
     protected $with = [
